@@ -1,0 +1,23 @@
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+.Python
+.venv/
+venv/
+ENV/
+.env
+
+# Local/editor
+.vscode/
+.idea/
+
+# Generated artifacts (do not commit)
+*.db
+*.sqlite
+*.sqlite3
+*.csv
+"Dataset 12"/
+"Dataset 12 images"/
+
