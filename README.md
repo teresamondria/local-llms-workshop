@@ -1,4 +1,4 @@
-# DATASET_12_DEMO (local-model workshop demo)
+# Local model investigations demo
 
 This demo turns a folder of PDFs into page images, labels a few page images using a **local vision model** in Ollama, then builds a **tiny embedding search UI** over the generated descriptions.
 
@@ -8,20 +8,85 @@ The repo intentionally does **not** include:
 - the SQLite DB
 - any generated CSV exports
 
-## Prereqs
+## Starting from zero (no assumptions)
 
-- **Python 3.10+**
-- **Ollama** installed and running (`https://ollama.com/`)
+This workshop assumes you might not have Python, a terminal habit, or Ollama yet. You need three things on your computer:
 
-## Install Python deps
+1. An open **terminal** (to type commands).
+2. **Python 3.10 or newer** (runs the scripts; `pip` comes with it for installing small Python libraries).
+3. **Ollama** (runs the LLM and embedding models on your machine).
 
-From `DATASET_12_DEMO/`:
+Everything below is free for local use; you are not calling paid APIs in this demo.
+
+### Open a terminal
+
+- **macOS**: Spotlight (`Cmd + Space`), type `Terminal`, press Enter. Or: Finder → Applications → Utilities → Terminal.
+- **Windows**: Start menu → search **PowerShell** or **Command Prompt**. (If you use **Windows Subsystem for Linux**, use that terminal instead and adapt paths.)
+- **Linux**: Your distro’s terminal app (e.g. GNOME Terminal).
+
+**Minimal navigation** (you will use these a lot):
+
+- `pwd` — print “where am I?”
+- `ls` — list files in the current folder
+- `cd path/to/folder` — change folder (use quotes if the name has spaces)
+
+Clone or download this repo, then `cd` into **this repository’s root folder** (the one that contains `requirements.txt` and the `.py` scripts) before running the commands below.
+
+### Install Python (if you do not have it)
+
+1. Check whether Python is already there:
+
+   ```bash
+   python3 --version
+   ```
+
+   If you see something like `Python 3.10.x` or higher, you are fine. If the command is not found, install Python.
+
+   On some Windows setups the command is `py -3 --version` or `python --version` instead of `python3`. Use the same command consistently below (replace `python3` with `py -3` or `python` if that is what works).
+
+2. **Install** (pick one):
+
+   - **macOS / Windows / Linux (official installer):** [https://www.python.org/downloads/](https://www.python.org/downloads/) — download, run the installer, and **enable “Add Python to PATH”** (Windows) or follow the installer defaults (macOS).
+   - **Windows (Microsoft Store):** search “Python 3.12” in the Store and install.
+
+3. **Close and reopen** the terminal, then run `python3 --version` again.
+
+`pip` is the tool that installs Python packages. It is usually available as:
+
+```bash
+python3 -m pip --version
+```
+
+(On Windows, if you use `py`, run `py -3 -m pip --version`.)
+
+If that fails, try the “ensure pip” step from [Python’s pip documentation](https://pip.pypa.io/en/stable/installation/) or reinstall Python with the option to install pip.
+
+### Install Ollama (if you do not have it)
+
+1. Download and install from [https://ollama.com/](https://ollama.com/) (macOS app, Windows installer, or Linux instructions on the site).
+2. **Start Ollama** (open the app or start the service). It should listen on `http://127.0.0.1:11434`. If the scripts say they cannot reach Ollama, the app is not running.
+
+### Install Python libraries for this demo
+
+From **this repo’s root** (same folder as `requirements.txt`):
+
+**macOS / Linux:**
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
 ```
+
+**Windows (PowerShell or Command Prompt):**
+
+```bash
+python3 -m venv .venv
+.venv\Scripts\activate
+python3 -m pip install -r requirements.txt
+```
+
+After `activate`, your prompt often shows `(.venv)`. **Every time** you open a new terminal to work on this demo, `cd` into the repo root and run `source .venv/bin/activate` again (or `.venv\Scripts\activate` on Windows).
 
 ## Install Ollama models
 
@@ -45,9 +110,9 @@ ollama pull nomic-embed-text
 
 ### `render_pdfs_to_images.py`
 
-- Reads PDFs from `DATASET_12_DEMO/Dataset 12/`
-- Renders every page to PNGs under `DATASET_12_DEMO/Dataset 12 images/<pdf_stem>/page_0001.png`
-- Writes/updates a SQLite DB: `DATASET_12_DEMO/dataset12_page_images.db`
+- Reads PDFs from `Dataset 12/` (under this repo root)
+- Renders every page to PNGs under `Dataset 12 images/<pdf_stem>/page_0001.png`
+- Writes/updates a SQLite DB: `dataset12_page_images.db` (in this repo root when you run the script from here)
 
 Run:
 
@@ -138,4 +203,3 @@ Then open the local URL printed in your terminal (default `http://127.0.0.1:7860
 - `table of numbers`
 - `fax cover sheet`
 - `passport photo`
-
