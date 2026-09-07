@@ -124,11 +124,25 @@ def parse_model_json(text: str) -> tuple[str, str]:
     t = text.strip()
     t = re.sub(r"^```(?:json)?\s*", "", t, flags=re.IGNORECASE)
     t = re.sub(r"\s*```\s*$", "", t)
-    data: Any = json.loads(t)
-    if not isinstance(data, dict):
-        raise ValueError("model output is not a JSON object")
-    cat = str(data.get("category", "")).strip().lower()
-    desc = str(data.get("description", "")).strip()
+
+    # strict=False tolerates the raw newlines models put inside strings.
+    data: Any = None
+    try:
+        data = json.loads(t, strict=False)
+    except json.JSONDecodeError:
+        pass
+
+    if isinstance(data, dict):
+        cat = str(data.get("category", "")).strip().lower()
+        desc = str(data.get("description", "")).strip()
+    else:
+        # Salvage unescaped quotes etc. by reading the fields directly.
+        m = re.search(r'"category"\s*:\s*"?\s*(photo|document)', t, re.IGNORECASE)
+        cat = m.group(1).lower() if m else ""
+        m = re.search(r'"description"\s*:\s*"(.*)', t, re.DOTALL)
+        desc = m.group(1).strip() if m else ""
+        desc = desc.rstrip().removesuffix("}").rstrip().removesuffix('"').strip()
+        desc = re.sub(r"\s+", " ", desc)
     if cat not in ("photo", "document"):
         raise ValueError(f"category must be photo or document, got {cat!r}")
     if not desc:
