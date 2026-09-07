@@ -9,16 +9,10 @@ Default model is llava (fast baseline). Other options:
   ollama pull llava
       -> use --model llava
 
-  ollama pull llama3.2-vision
-      -> use --model llama3.2-vision  (11B-class; avoid :90b on laptops)
+  ollama pull granite3.2-vision
+      -> use --model granite3.2-vision  (2B-class; built for document pages)
 
-  ollama pull qwen2.5vl:7b
-      # or: ollama pull qwen2.5vl:3b   (lighter; still strong on documents)
-      -> use --model qwen2.5vl:7b
-  In the Ollama library the current Qwen vision line is "qwen2.5vl" (Qwen2.5-VL);
-  tags vary—check https://ollama.com/library/qwen2.5vl
-
-Requires a recent Ollama (qwen2.5vl notes Ollama 0.7.0+ in its readme).
+Requires a recent Ollama (0.7.0+).
 """
 
 from __future__ import annotations
@@ -180,8 +174,8 @@ def main() -> int:
         "--model",
         default=DEFAULT_MODEL,
         help=(
-            "Vision Ollama model. Default: llava. Alternatives: llama3.2-vision, qwen2.5vl:7b, "
-            "qwen2.5vl:3b (see ollama.com/library). Do not use llama3.1:8b."
+            "Vision Ollama model. Default: llava. Alternative: granite3.2-vision "
+            "(see ollama.com/library). Do not use llama3.1:8b."
         ),
     )
     parser.add_argument(

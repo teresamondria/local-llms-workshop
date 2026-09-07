@@ -18,6 +18,6 @@ ENV/
 *.sqlite
 *.sqlite3
 *.csv
-"Dataset 12"/
-"Dataset 12 images"/
+Dataset 12/
+Dataset 12 images/
 
